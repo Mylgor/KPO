@@ -10,10 +10,3 @@ public:
 	virtual int GetArea() const = 0;
 	virtual std::string GetName() const = 0;
 };
-
-
-class CCreator
-{
-public:
-	virtual ÑFigures *GetInstance() const = 0;
-};

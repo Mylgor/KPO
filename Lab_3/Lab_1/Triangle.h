@@ -15,7 +15,7 @@ private:
 
 
 
-class TriangleCreator : CCreator
+class TriangleCreator
 {
 public:
 	static CTriangle *GetInstance(Point &point1, Point &point2, Point &point3)

@@ -108,7 +108,6 @@ int main(int argñ, char *argv[])
 			{
 				vector<Point> points = { point1, point2, point3 };
 				GetVetices(readSteam, points);
-
 				figure = TriangleCreator::GetInstance(points[0], points[1], points[2]);
 				points.clear();
 			}

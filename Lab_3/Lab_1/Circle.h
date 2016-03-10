@@ -17,7 +17,7 @@ private:
 
 
 
-class CircleCreator : CCreator
+class CircleCreator
 {
 public:
 	static CCircle *GetInstance(Point &point, int radius)

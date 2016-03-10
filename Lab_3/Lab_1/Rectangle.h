@@ -14,7 +14,7 @@ private:
 
 
 
-class RectangleCreator : CCreator
+class RectangleCreator
 {
 public:
 	static CRectangle *GetInstance(Point &point1, Point &point2)
