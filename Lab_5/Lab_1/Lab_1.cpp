@@ -9,6 +9,8 @@
 #include "RectangleCreator.h"
 #include "Triangle.h"
 #include "TriangleCreator.h"
+#include "BigNumber.h"
+#include "CoutVisitor.h"
 
 using namespace std;
 
@@ -35,7 +37,7 @@ string GetNameFigures(ifstream &readStream)
 void GetVetices(ifstream &readStream, vector<Point> &points)
 {
 	char symbol = ' ';
-	string number = "";
+	vector<int> number;
 	int count = 0;
 	int index = 0;
 	bool isWrite = false;	
@@ -49,27 +51,27 @@ void GetVetices(ifstream &readStream, vector<Point> &points)
 
 		if (symbol >= '0' && symbol <= '9' && isWrite && !endFile)
 		{
-			number += symbol;
+			number.push_back(symbol - '0');
 		}
 		else
 		{
-			if (number != "")
+			if (number.size() != 0)
 			{
 				switch (count)
 				{
 				case 0:
-					points[index].x = stoi(number);
+					points[index].x = number;
 					count++;
 					break;
 				case 1:
-					points[index].y = stoi(number);
+					points[index].y = number;
 					count = 0;
 					index++;
 					isWrite = false;
 					break;
 				}
 			}
-			number = "";
+			number.clear();
 		}
 
 		if (symbol == '=' || symbol == ':')
@@ -79,13 +81,14 @@ void GetVetices(ifstream &readStream, vector<Point> &points)
 
 void PrintAreaAndPerimeter(ÑFigures *figure, ofstream &outputStream)
 {
-	outputStream << figure->GetName() << ": P = " << figure->GetPerimeter() << "; S = " << figure->GetArea() << endl;
+	cout << figure->GetName() << ": P = " << figure->GetPerimeter() << "; S = " << figure->GetArea() << endl;
 }
 
 
 int main(int argñ, char *argv[])
 {
 	setlocale(LC_ALL, "Russian");
+
 	if (argñ < 3)
 	{
 		cout << "Íåâåðíîå ÷èñëî ïåðåäàííûõ ïàðàìåòðîâ" << endl;
@@ -100,6 +103,8 @@ int main(int argñ, char *argv[])
 	CTriangleCreator* triangleCreator = CTriangleCreator::GetInstance();
 	CRectangleCreator* rectCreator = CRectangleCreator::GetInstance();
 	CCircleCreator* circCreator = CCircleCreator::GetInstance();
+
+	CoutVisitor cVisit;
 
 	while (!readSteam.eof())
 	{
@@ -122,6 +127,7 @@ int main(int argñ, char *argv[])
 				GetVetices(readSteam, points);
 				
 				figure = rectCreator->factoryMethod(points[0], points[1]);
+
 				points.clear();
 			}
 			else if (nameFigures == "CIRCLE")
@@ -130,16 +136,18 @@ int main(int argñ, char *argv[])
 				GetVetices(readSteam, points);
 			
 				figure = circCreator->factoryMethod(points[0], points[1].x);
+
 				points.clear();
 			}
 			else
 			{
 				cout << "Íåèçâåñòíàÿ ôèãóðà: " << nameFigures << endl;
+				figure = nullptr;
 			}
 
 			if (figure != nullptr)
 			{
-				PrintAreaAndPerimeter(figure, outputStream);
+				figure->accept(cVisit, outputStream);
 				delete figure;
 			}
 		}

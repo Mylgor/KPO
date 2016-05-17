@@ -24,6 +24,3 @@ std::string CTriangle::GetName() const
 {
 	return "TRIANGLE";
 }
-
-
-CTriangle *TriangleCreator::m_instance = 0;

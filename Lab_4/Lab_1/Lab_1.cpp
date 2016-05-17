@@ -9,6 +9,7 @@
 #include "RectangleCreator.h"
 #include "Triangle.h"
 #include "TriangleCreator.h"
+#include "BigNumber.h"
 
 using namespace std;
 
@@ -35,7 +36,7 @@ string GetNameFigures(ifstream &readStream)
 void GetVetices(ifstream &readStream, vector<Point> &points)
 {
 	char symbol = ' ';
-	string number = "";
+	vector<int> number;
 	int count = 0;
 	int index = 0;
 	bool isWrite = false;	
@@ -49,27 +50,27 @@ void GetVetices(ifstream &readStream, vector<Point> &points)
 
 		if (symbol >= '0' && symbol <= '9' && isWrite && !endFile)
 		{
-			number += symbol;
+			number.push_back(symbol - '0');
 		}
 		else
 		{
-			if (number != "")
+			if (number.size() != 0)
 			{
 				switch (count)
 				{
 				case 0:
-					points[index].x = stoi(number);
+					points[index].x = number;
 					count++;
 					break;
 				case 1:
-					points[index].y = stoi(number);
+					points[index].y = number;
 					count = 0;
 					index++;
 					isWrite = false;
 					break;
 				}
 			}
-			number = "";
+			number.clear();
 		}
 
 		if (symbol == '=' || symbol == ':')
@@ -79,13 +80,14 @@ void GetVetices(ifstream &readStream, vector<Point> &points)
 
 void PrintAreaAndPerimeter(СFigures *figure, ofstream &outputStream)
 {
-	outputStream << figure->GetName() << ": P = " << figure->GetPerimeter() << "; S = " << figure->GetArea() << endl;
+	cout << figure->GetName() << ": P = " << figure->GetPerimeter() << "; S = " << figure->GetArea() << endl;
 }
 
 
 int main(int argс, char *argv[])
 {
 	setlocale(LC_ALL, "Russian");
+
 	if (argс < 3)
 	{
 		cout << "Неверное число переданных параметров" << endl;
@@ -135,6 +137,7 @@ int main(int argс, char *argv[])
 			else
 			{
 				cout << "Неизвестная фигура: " << nameFigures << endl;
+				figure = nullptr;
 			}
 
 			if (figure != nullptr)

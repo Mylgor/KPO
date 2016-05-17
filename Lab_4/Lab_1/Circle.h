@@ -1,16 +1,17 @@
 #pragma once
 #include "ÑFigures.h"
+
 #define M_PI 3.14
 
 class CCircle : public ÑFigures
 {
 public:
-	CCircle(Point &point, int &radius);
-	virtual int GetPerimeter() const;
-	virtual int GetArea() const;
+	CCircle(Point &point, BigNumber &radius);
+	virtual BigNumber GetPerimeter() const;
+	virtual BigNumber GetArea() const;
 	virtual std::string GetName() const;
 
 private:
 	Point m_centerPoint;
-	int m_radius;
+	BigNumber m_radius;
 };

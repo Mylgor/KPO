@@ -20,5 +20,3 @@ std::string CCircle::GetName() const
 {
 	return "CIRCLE";
 }
-
-CCircle *CircleCreator::m_instance = 0;
